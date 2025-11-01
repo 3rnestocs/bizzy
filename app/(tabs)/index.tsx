@@ -1,14 +1,13 @@
-import { StyleSheet } from 'react-native';
+// app/(tabs)/index.tsx
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+      <Text style={styles.title}>Inicio (Home)</Text>
+      <View style={styles.separator} />
+      <Text>Aquí irá el timeline de Bizzy.</Text>
     </View>
   );
 }
@@ -27,5 +26,6 @@ const styles = StyleSheet.create({
     marginVertical: 30,
     height: 1,
     width: '80%',
+    backgroundColor: '#eee', // Añadí un color base
   },
 });

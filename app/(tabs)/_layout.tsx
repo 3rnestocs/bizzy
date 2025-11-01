@@ -1,13 +1,10 @@
-import React from 'react';
+// app/(tabs)/_layout.tsx
+
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Tabs } from 'expo-router';
+import React from 'react';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
+// Función helper para los iconos
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
@@ -16,42 +13,63 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  // Define aquí los colores de tu marca (sacados de tu PDF)
+  const BRAND_COLOR_ACTIVE = '#3268a7'; // Tu azul
+  const BRAND_COLOR_INACTIVE = '#b5c2cf'; // Tu gris
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        tabBarActiveTintColor: BRAND_COLOR_ACTIVE,
+        tabBarInactiveTintColor: BRAND_COLOR_INACTIVE,
+        headerShown: false, // Ocultamos los headers por ahora
+        tabBarStyle: {
+          backgroundColor: '#FFFFFF', // Fondo blanco para la tab bar
+        },
       }}>
+      
+      {/* Pestaña 1: Inicio */}
       <Tabs.Screen
-        name="index"
+        name="index" // Corresponde a index.tsx
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: 'Inicio',
+          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
         }}
       />
+      
+      {/* Pestaña 2: Búsqueda */}
       <Tabs.Screen
-        name="two"
+        name="busqueda" // Corresponde a busqueda.tsx
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Búsqueda',
+          tabBarIcon: ({ color }) => <TabBarIcon name="search" color={color} />,
+        }}
+      />
+      
+      {/* Pestaña 3: Crear */}
+      <Tabs.Screen
+        name="crear" // Corresponde a crear.tsx
+        options={{
+          title: 'Crear',
+          tabBarIcon: ({ color }) => <TabBarIcon name="plus-square" color={color} />,
+        }}
+      />
+      
+      {/* Pestaña 4: Notificaciones */}
+      <Tabs.Screen
+        name="notificaciones" // Corresponde a notificaciones.tsx
+        options={{
+          title: 'Notificaciones',
+          tabBarIcon: ({ color }) => <TabBarIcon name="bell" color={color} />,
+        }}
+      />
+      
+      {/* Pestaña 5: Perfil */}
+      <Tabs.Screen
+        name="perfil" // Corresponde a perfil.tsx
+        options={{
+          title: 'Perfil',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>
