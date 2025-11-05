@@ -8,21 +8,21 @@ interface BZTextFieldProps extends TextInputProps {
   label: string;
   style?: ViewStyle;
 }
-
 export function BZTextField({ label, style, ...textInputProps }: BZTextFieldProps) {
   return (
-    // Este View es el contenedor general
     <View style={[styles.wrapper, style]}>
-      
-      {/* 3. El label ahora está fuera */}
       <Text style={styles.label}>{label}</Text>
       
-      {/* El TextInput es la caja con sombra y fondo */}
       <TextInput
-        style={styles.input}
+        // --- INICIO DEL CAMBIO ---
+        style={[
+          styles.input, 
+          textInputProps.multiline && styles.multilineInput // Aplica estilo si es multilínea
+        ]}
         placeholderTextColor={Colors.text.secondary}
         placeholder={textInputProps.placeholder ?? label}
-        {...textInputProps}
+        {...textInputProps} // Pasa multiline, numberOfLines, etc.
+        // --- FIN DEL CAMBIO ---
       />
     </View>
   );
@@ -63,5 +63,11 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
+  },
+  // --- AÑADE ESTE NUEVO ESTILO ---
+  multilineInput: {
+    height: 120, // Altura fija para el campo de descripción
+    textAlignVertical: 'top', // Para que el texto empiece arriba en Android
+    paddingTop: 14, // Asegura el padding superior en multilínea
   },
 });

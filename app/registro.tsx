@@ -23,8 +23,10 @@ export default function RegistroScreen() {
     Alert.alert('Registro', 'WIP: El registro aún no está implementado.');
   };
 
-  const goToBusinessRegister = () => {
-    Alert.alert('Registro Negocio', 'WIP: Flujo de registro de negocio.');
+const goToBusinessRegister = () => {
+    // --- CAMBIA ESTO ---
+    router.push('/registro-negocio');
+    // -------------------
   };
 
   return (

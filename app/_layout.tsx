@@ -51,6 +51,8 @@ function RootLayoutNav() {
       <Stack.Screen name="login" options={{ headerShown: false }} />
       <Stack.Screen name="registro" options={{ headerShown: false }} />
       
+      <Stack.Screen name="registro-negocio" options={{ headerShown: false }} />
+
       {/* Esta es la pantalla principal que carga tu barra de pestañas */}
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
     </Stack>
