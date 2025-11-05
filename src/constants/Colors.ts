@@ -1,9 +1,9 @@
 // src/constants/Colors.ts
 
 // Colores de la paleta principal (basados en tu PDF y diseños)
+const BZ_PRIMARY_ORANGE = '#F59E0B';
 const BZ_PRIMARY_BLUE = '#022546';
 const BZ_SECONDARY_BLUE = '#3268a7';
-const BZ_PRIMARY_ORANGE = '#F59E0B';
 const BZ_LIGHT_GRAY = '#E5E8EB';
 const BZ_MEDIUM_GRAY = '#5C738A';
 const BZ_TEXT_LIGHT = '#F7FAFC';
@@ -27,7 +27,7 @@ export default {
     border: BZ_LIGHT_GRAY,
     input: BZ_INPUT_BACKGROUND, // <-- AÑADIDO
   },
-
+  
   // Colores de Texto
   text: {
     primary: BZ_TEXT_DARK,

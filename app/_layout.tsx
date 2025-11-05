@@ -8,27 +8,21 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary
 } from 'expo-router';
 
 export const unstable_settings = {
-  // Ensure that reloading on `(tabs)` keeps a back button present.
-  // (Aunque en tu caso, (tabs) es la ruta inicial)
-  initialRouteName: '(tabs)',
+  initialRouteName: '(tabs)', // Esto está bien, pero 'index' tendrá prioridad
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    // Aquí cargarás tus fuentes personalizadas (Montserrat, etc.)
-    // Por ahora, solo cargamos la de los iconos de la TabBar
     ...FontAwesome.font,
+    // (Aquí cargarás tus fuentes 'Montserrat', etc.)
   });
 
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
@@ -40,7 +34,7 @@ export default function RootLayout() {
   }, [loaded]);
 
   if (!loaded) {
-    return null; // Muestra el Splash Screen mientras cargan las fuentes
+    return null;
   }
 
   return <RootLayoutNav />;
@@ -48,13 +42,17 @@ export default function RootLayout() {
 
 function RootLayoutNav() {
   return (
-    // Ya no necesitamos el ThemeProvider
     <Stack>
+      {/* Añadimos las pantallas de auth al Stack.
+        Expo Router las descubre por sus nombres de archivo.
+        Ocultamos sus headers para un look limpio.
+      */}
+      <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="login" options={{ headerShown: false }} />
+      <Stack.Screen name="registro" options={{ headerShown: false }} />
+      
       {/* Esta es la pantalla principal que carga tu barra de pestañas */}
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      
-      {/* Aquí definirías otras pantallas MODALES GLOBALES si las necesitaras */}
-      {/* Ej: <Stack.Screen name="settingsModal" options={{ presentation: 'modal' }} /> */}
     </Stack>
   );
 }
