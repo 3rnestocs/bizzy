@@ -4,6 +4,9 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Tabs } from 'expo-router';
 import React from 'react';
 
+// --- 1. IMPORTAR LOS COLORES ---
+import Colors from '@/src/constants/Colors';
+
 // Función helper para los iconos
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
@@ -13,18 +16,19 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  // Define aquí los colores de tu marca (sacados de tu PDF)
-  const BRAND_COLOR_ACTIVE = '#3268a7'; // Tu azul
-  const BRAND_COLOR_INACTIVE = '#b5c2cf'; // Tu gris
+  // --- 2. ELIMINAMOS LAS CONSTANTES LOCALES ---
+  // const BRAND_COLOR_ACTIVE = '#3268a7'; 
+  // const BRAND_COLOR_INACTIVE = '#b5c2cf';
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: BRAND_COLOR_ACTIVE,
-        tabBarInactiveTintColor: BRAND_COLOR_INACTIVE,
-        headerShown: false, // Ocultamos los headers por ahora
+        // --- 3. USAMOS LOS COLORES DEL ARCHIVO ---
+        tabBarActiveTintColor: Colors.tabs.active, // Este es tu azul '#3268a7'
+        tabBarInactiveTintColor: Colors.tabs.inactive, // Este es tu gris '#b5c2cf'
+        headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#FFFFFF', // Fondo blanco para la tab bar
+          backgroundColor: Colors.ui.background, // Este es el '#FFFFFF'
         },
       }}>
       
