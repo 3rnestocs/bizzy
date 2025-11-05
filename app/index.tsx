@@ -31,7 +31,7 @@ export default function WelcomeScreen() {
         />
         <BZButton
           title="Regístrate"
-          variant="primary" // El botón azul
+          variant="accent" // El botón azul
           onPress={() => router.push('/registro')} // Navega a /registro
           style={styles.button}
         />
