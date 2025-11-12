@@ -1,5 +1,4 @@
-// src/components/common/BZFileUpload.tsx
-
+// Archivo: src/components/common/BZFileUpload.tsx
 import Colors from '@/src/constants/Colors';
 import React from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';

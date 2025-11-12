@@ -1,5 +1,4 @@
-// app/index.tsx
-
+// Archivo: app/(auth)/index.tsx
 import { BZButton } from '@/src/components/common/BZButton';
 import Colors from '@/src/constants/Colors';
 import { useRouter } from 'expo-router'; // Importa el router
@@ -23,16 +22,16 @@ export default function WelcomeScreen() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <BZButton
+       <BZButton
           title="Inicia Sesión"
-          variant="secondary" // El botón naranja
-          onPress={() => router.push('/login')} // Navega a /login
+          variant="secondary"
+          onPress={() => router.push('/(auth)/login')} 
           style={styles.button}
         />
         <BZButton
           title="Regístrate"
-          variant="accent" // El botón azul
-          onPress={() => router.push('/registro')} // Navega a /registro
+          variant="accent"
+          onPress={() => router.push('/(auth)/registro')} 
           style={styles.button}
         />
       </View>

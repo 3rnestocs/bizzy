@@ -1,12 +1,11 @@
-// app/(tabs)/crear.tsx
-
+// Archivo: app/(app)/perfil.tsx
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function CrearScreen() {
+export default function PerfilScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Crear Publicación</Text>
-      <Text style={styles.subtitle}>Aquí irá el formulario para un nuevo post.</Text>
+      <Text style={styles.title}>Mi Perfil</Text>
+      <Text style={styles.subtitle}>Aquí se mostrará el perfil del usuario/negocio.</Text>
     </View>
   );
 }

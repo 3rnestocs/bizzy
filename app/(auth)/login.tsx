@@ -1,35 +1,45 @@
-// app/login.tsx
-
+// Archivo: app/(auth)/login.tsx
 import { BZButton } from '@/src/components/common/BZButton';
 import { BZTextField } from '@/src/components/common/BZTextField';
 import Colors from '@/src/constants/Colors';
-import FontAwesome from '@expo/vector-icons/FontAwesome'; // Importa FontAwesome
+import { useSession } from '@/src/context/SessionContext';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { signIn } = useSession();
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleLogin = () => {
-    Alert.alert('Inicio de Sesión', `Usuario: ${username}\nContraseña: ${password}`);
-    // router.replace('/(tabs)'); 
+  const handleLogin = async () => {
+    if (!username || !password) {
+      setError('Por favor, completa todos los campos.');
+      return;
+    }
+    
+    setIsLoading(true);
+    setError('');
+
+    try {
+      await signIn({ username, password });
+    } catch (e: any) {
+      setIsLoading(false);
+      setError('Usuario o contraseña incorrectos.');
+    }
   };
   
   const goToRegister = () => {
-    router.push('/registro');
-  };
-  
-  const goToForgotPassword = () => {
-    Alert.alert('WIP', 'Pantalla de recuperar contraseña no implementada.');
+    router.push('/(auth)/registro');
   };
 
   return (
     <View style={styles.outerContainer}>
-      
-      {/* --- 1. ENCABEZADO FIJO --- */}
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <FontAwesome name="arrow-left" size={24} color={Colors.text.primary} />
@@ -37,7 +47,6 @@ export default function LoginScreen() {
         <Text style={styles.title}>Iniciar sesión</Text>
       </View>
       
-      {/* --- 2. CONTENIDO CON SCROLL --- */}
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
@@ -63,20 +72,19 @@ export default function LoginScreen() {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
+
+          {error && <Text style={styles.errorText}>{error}</Text>}
+
           <BZButton
             title="Inicia sesión"
             variant="primary"
             onPress={handleLogin}
+            loading={isLoading}
             style={{ marginTop: 20 }}
           />
         </View>
 
         <View style={styles.linksContainer}>
-          <BZButton
-            title="¿Se te olvidó la contraseña?"
-            variant="ghost"
-            onPress={goToForgotPassword}
-          />
           <BZButton
             title="¿No tienes cuenta? Regístrate."
             variant="ghost"
@@ -91,21 +99,21 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    backgroundColor: Colors.ui.background, // #F7FAFC
+    backgroundColor: Colors.ui.background,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center', // Centra el título
-    paddingTop: 60, // Ajusta para el Safe Area
+    justifyContent: 'center',
+    paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
-    backgroundColor: Colors.ui.background, // Mismo fondo
+    backgroundColor: Colors.ui.background,
   },
   backButton: {
-    position: 'absolute', // Permite que el título se centre
+    position: 'absolute',
     left: 20,
-    top: 60, // Alineado con el paddingTop
+    top: 60,
   },
   title: {
     fontSize: 22,
@@ -140,5 +148,10 @@ const styles = StyleSheet.create({
   linksContainer: {
     marginTop: 20,
     alignItems: 'center',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });

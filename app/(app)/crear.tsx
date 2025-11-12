@@ -1,12 +1,11 @@
-// app/(tabs)/notificaciones.tsx
-
+// Archivo: app/(app)/crear.tsx
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function NotificacionesScreen() {
+export default function CrearScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Notificaciones</Text>
-      <Text style={styles.subtitle}>Aquí irá la lista de notificaciones.</Text>
+      <Text style={styles.title}>Crear Publicación</Text>
+      <Text style={styles.subtitle}>Aquí irá el formulario para un nuevo post.</Text>
     </View>
   );
 }

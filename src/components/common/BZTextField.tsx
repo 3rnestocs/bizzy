@@ -1,5 +1,4 @@
-// src/components/common/BZTextField.tsx
-
+// Archivo: src/components/common/BZTextField.tsx
 import Colors from '@/src/constants/Colors';
 import React from 'react';
 import { Platform, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle } from 'react-native';

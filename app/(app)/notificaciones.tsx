@@ -1,12 +1,11 @@
-// app/(tabs)/perfil.tsx
-
+// Archivo: app/(app)/notificaciones.tsx
 import { StyleSheet, Text, View } from 'react-native';
 
-export default function PerfilScreen() {
+export default function NotificacionesScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mi Perfil</Text>
-      <Text style={styles.subtitle}>Aquí se mostrará el perfil del usuario/negocio.</Text>
+      <Text style={styles.title}>Notificaciones</Text>
+      <Text style={styles.subtitle}>Aquí irá la lista de notificaciones.</Text>
     </View>
   );
 }

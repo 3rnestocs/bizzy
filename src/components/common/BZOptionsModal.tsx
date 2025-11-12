@@ -1,5 +1,4 @@
-// src/components/common/BZOptionsModal.tsx
-
+// Archivo: src/components/common/BZOptionsModal.tsx
 import Colors from '@/src/constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React from 'react';

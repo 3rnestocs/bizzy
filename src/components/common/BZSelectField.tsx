@@ -1,5 +1,4 @@
-// src/components/common/BZSelectField.tsx
-
+// Archivo: src/components/common/BZSelectField.tsx
 import Colors from '@/src/constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import React from 'react';

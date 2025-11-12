@@ -1,16 +1,17 @@
-// app/registro.tsx
-
+// Archivo: app/(auth)/registro.tsx
 import { BZButton } from '@/src/components/common/BZButton';
 import { BZFileUpload } from '@/src/components/common/BZFileUpload';
 import { BZTextField } from '@/src/components/common/BZTextField';
 import Colors from '@/src/constants/Colors';
+import { useSession } from '@/src/context/SessionContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function RegistroScreen() {
   const router = useRouter();
+  const { signUp } = useSession();
   
   const [nombre, setNombre] = useState('');
   const [apellido, setApellido] = useState('');
@@ -19,20 +20,46 @@ export default function RegistroScreen() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  const handleRegister = () => {
-    Alert.alert('Registro', 'WIP: El registro aún no está implementado.');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const validateFields = () => {
+    if (!nombre || !apellido || !username || !email || !password || !confirmPassword) {
+      setError('Todos los campos son obligatorios.');
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError('Las contraseñas no coinciden.');
+      return false;
+    }
+    if (password.length < 6) {
+      setError('La contraseña debe tener al menos 6 caracteres.');
+      return false;
+    }
+    setError('');
+    return true;
   };
 
-const goToBusinessRegister = () => {
-    // --- CAMBIA ESTO ---
-    router.push('/registro-negocio');
-    // -------------------
+  const handleRegister = async () => {
+    if (!validateFields()) {
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      await signUp({ nombre, apellido, username, email, password });
+    } catch (e: any) {
+      setIsLoading(false);
+      setError('Error al crear la cuenta. Intenta de nuevo.');
+    }
+  };
+
+  const goToBusinessRegister = () => {
+    router.push('/(auth)/registro-negocio');
   };
 
   return (
     <View style={styles.outerContainer}>
-      
-      {/* --- 1. ENCABEZADO FIJO --- */}
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <FontAwesome name="arrow-left" size={24} color={Colors.text.primary} />
@@ -40,7 +67,6 @@ const goToBusinessRegister = () => {
         <Text style={styles.title}>Únete a la comunidad</Text>
       </View>
 
-      {/* --- 2. CONTENIDO CON SCROLL --- */}
       <ScrollView 
         contentContainerStyle={styles.scrollContainer}
         keyboardShouldPersistTaps="handled"
@@ -88,11 +114,14 @@ const goToBusinessRegister = () => {
           subtitle="Añade una imagen que te identifique"
         />
 
+        {error && <Text style={styles.errorText}>{error}</Text>}
+
         <View style={styles.buttonContainer}>
           <BZButton
             title="Registrarse"
             variant="primary"
             onPress={handleRegister}
+            loading={isLoading}
           />
           <BZButton
             title="¿Tienes un negocio? ¡Regístralo!"
@@ -108,13 +137,13 @@ const goToBusinessRegister = () => {
 const styles = StyleSheet.create({
   outerContainer: {
     flex: 1,
-    backgroundColor: Colors.ui.background, // #F7FAFC
+    backgroundColor: Colors.ui.background,
   },
   headerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center', // Centra el título
-    paddingTop: 60, // Ajusta para el Safe Area
+    justifyContent: 'center',
+    paddingTop: 60,
     paddingBottom: 20,
     paddingHorizontal: 20,
     backgroundColor: Colors.ui.background,
@@ -122,7 +151,7 @@ const styles = StyleSheet.create({
   backButton: {
     position: 'absolute',
     left: 20,
-    top: 60, // Alineado con el paddingTop
+    top: 60,
   },
   title: {
     fontSize: 22,
@@ -137,10 +166,15 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    marginTop: 20, // Espacio desde el header
+    marginTop: 20,
   },
   buttonContainer: {
     width: '100%',
     marginTop: 10,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });

@@ -1,19 +1,16 @@
-// app/registro-negocio.tsx
-
+// Archivo: app/(auth)/registro-negocio.tsx
 import { BZButton } from '@/src/components/common/BZButton';
 import { BZFileUpload } from '@/src/components/common/BZFileUpload';
+import { BZOptionsModal, ModalOption } from '@/src/components/common/BZOptionsModal';
 import { BZSelectField } from '@/src/components/common/BZSelectField';
 import { BZTextField } from '@/src/components/common/BZTextField';
 import Colors from '@/src/constants/Colors';
+import { useSession } from '@/src/context/SessionContext';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-// --- 1. IMPORTA EL NUEVO MODAL Y SU TIPO DE OPCIÓN ---
-import { BZOptionsModal, ModalOption } from '@/src/components/common/BZOptionsModal';
-
-// --- 2. AÑADE LAS INDUSTRIAS DEMO ---
 const DEMO_INDUSTRIES: ModalOption[] = [
   { label: 'Restaurante', value: 'restaurant' },
   { label: 'Tecnología', value: 'tech' },
@@ -26,6 +23,7 @@ const DEMO_INDUSTRIES: ModalOption[] = [
 
 export default function RegistroNegocioScreen() {
   const router = useRouter();
+  const { signUp } = useSession();
   
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
@@ -34,27 +32,43 @@ export default function RegistroNegocioScreen() {
   const [industria, setIndustria] = useState<string | null>(null);
   const [locacion, setLocacion] = useState('');
 
-  // --- 3. ESTADO PARA CONTROLAR LA VISIBILIDAD DEL MODAL ---
   const [isPickerVisible, setIsPickerVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleRegister = () => {
-    Alert.alert('Registro de Negocio', 'WIP: El registro aún no está implementado.');
+  const validateFields = () => {
+    if (!nombre || !telefono || !industria || !locacion) {
+      setError('Por favor, completa todos los campos obligatorios.');
+      return false;
+    }
+    setError('');
+    return true;
   };
 
-  // --- 4. FUNCIÓN PARA MANEJAR LA SELECCIÓN ---
+  const handleRegister = async () => {
+    if (!validateFields()) {
+      return;
+    }
+    
+    setIsLoading(true);
+    try {
+      await signUp({ nombre, telefono, sitioWeb, descripcion, industria, locacion });
+    } catch (e: any) {
+      setIsLoading(false);
+      setError('Error al registrar el negocio. Intenta de nuevo.');
+    }
+  };
+
   const handleIndustrySelect = (option: ModalOption) => {
-    setIndustria(option.value); // Guarda el 'value' (ej: 'tech')
-    setIsPickerVisible(false); // Cierra el modal
+    setIndustria(option.value);
+    setIsPickerVisible(false);
   };
 
-  // 5. Encuentra la etiqueta (label) de la industria seleccionada para mostrarla en el BZSelectField
   const selectedIndustryLabel = DEMO_INDUSTRIES.find(o => o.value === industria)?.label || null;
 
   return (
     <View style={styles.outerContainer}>
-      
       <View style={styles.headerContainer}>
-        {/* ... (Header sin cambios) ... */}
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <FontAwesome name="arrow-left" size={24} color={Colors.text.primary} />
         </TouchableOpacity>
@@ -66,17 +80,20 @@ export default function RegistroNegocioScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.formContainer}>
-          {/* ... (Campos de TextField sin cambios) ... */}
+          <BZTextField label="*Nombre del negocio" value={nombre} onChangeText={setNombre} />
+          <BZTextField label="*Teléfono" value={telefono} onChangeText={setTelefono} keyboardType="phone-pad" />
+          <BZTextField label="Sitio Web" value={sitioWeb} onChangeText={setSitioWeb} autoCapitalize="none" keyboardType="url" />
+          <BZTextField label="Descripción de tu negocio" value={descripcion} onChangeText={setDescripcion} multiline numberOfLines={4} />
 
           <BZSelectField
-            label="Industria"
-            value={selectedIndustryLabel} // <-- 6. Muestra la etiqueta seleccionada
+            label="*Industria"
+            value={selectedIndustryLabel}
             placeholder="Industria"
-            onPress={() => setIsPickerVisible(true)} // <-- 7. Abre el modal
+            onPress={() => setIsPickerVisible(true)}
           />
           
           <BZTextField
-            label="Locación"
+            label="*Locación"
             value={locacion}
             onChangeText={setLocacion}
             placeholder="Ciudad, país."
@@ -88,16 +105,18 @@ export default function RegistroNegocioScreen() {
           subtitle="Añade una imagen que te identifique"
         />
 
+        {error && <Text style={styles.errorText}>{error}</Text>}
+
         <View style={styles.buttonContainer}>
           <BZButton
             title="Registrarse"
             variant="primary"
             onPress={handleRegister}
+            loading={isLoading}
           />
         </View>
       </ScrollView>
 
-      {/* --- 8. RENDERIZA EL MODAL (estará oculto hasta que isPickerVisible sea true) --- */}
       <BZOptionsModal
         isVisible={isPickerVisible}
         onClose={() => setIsPickerVisible(false)}
@@ -111,7 +130,6 @@ export default function RegistroNegocioScreen() {
 }
 
 const styles = StyleSheet.create({
-  // ... (Estilos sin cambios) ...
   outerContainer: {
     flex: 1,
     backgroundColor: Colors.ui.background,
@@ -148,5 +166,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     marginTop: 10,
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });

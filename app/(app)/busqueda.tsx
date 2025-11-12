@@ -1,3 +1,4 @@
+// Archivo: app/(app)/busqueda.tsx
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function BusquedaScreen() {

@@ -1,5 +1,4 @@
-// src/components/common/BZButton.tsx
-
+// Archivo: src/components/common/BZButton.tsx
 import Colors from '@/src/constants/Colors';
 import React from 'react';
 import { ActivityIndicator, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
