@@ -1,8 +1,8 @@
 // Archivo: app/(app)/_layout.tsx
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Tabs } from 'expo-router';
+import { Tabs, useRouter } from 'expo-router';
 import React from 'react';
-import { Pressable } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
 import Colors from '@/src/constants/Colors';
 
@@ -14,6 +14,7 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
+  const router = useRouter();
   return (
     <Tabs
       screenOptions={{
@@ -82,12 +83,57 @@ export default function TabLayout() {
         }}
       />
       
-      {/* Pestaña 5: Perfil (CON HEADER ESTÁNDAR) */}
+      {/* Ruta oculta: Ajustes (no aparece en la tab bar) */}
+      <Tabs.Screen
+        name="ajustes" // Corresponde a app/(app)/ajustes.tsx
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
+
+      {/* Ruta oculta: Update Info (no aparece en la tab bar) */}
+      <Tabs.Screen
+        name="update-info" // Corresponde a app/(app)/update-info.tsx
+        options={{
+          href: null,
+          headerShown: false,
+        }}
+      />
+      
+      {/* Pestaña 5: Perfil (HEADER PERSONALIZADO) */}
       <Tabs.Screen
         name="perfil" // Corresponde a app/(app)/perfil.tsx
         options={{
           title: 'Perfil',
+          headerTitle: '',
+          headerShadowVisible: false,
+          headerStyle: {
+            backgroundColor: Colors.ui.background,
+            borderBottomWidth: StyleSheet.hairlineWidth,
+            borderBottomColor: Colors.ui.border,
+          },
           tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
+          headerLeft: () => (
+            <Pressable onPress={() => router.back()}>
+              <FontAwesome
+                name="chevron-left"
+                size={22}
+                color={Colors.text.primary}
+                style={{ marginLeft: 15, opacity: 0.9 }}
+              />
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable onPress={() => router.push('/(app)/ajustes')}>
+              <FontAwesome
+                name="cog"
+                size={27}
+                color={Colors.text.primary}
+                style={{ marginRight: 15, opacity: 0.9 }}
+              />
+            </Pressable>
+          ),
         }}
       />
     </Tabs>

@@ -38,6 +38,10 @@ export default function LoginScreen() {
     router.push('/(auth)/registro');
   };
 
+  const goToForgotPassword = () => {
+    router.push('/(auth)/forgot-password');
+  };
+
   return (
     <View style={styles.outerContainer}>
       <View style={styles.headerContainer}>
@@ -85,6 +89,11 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.linksContainer}>
+                    <BZButton
+            title="¿Se te olvidó la contraseña?"
+            variant="ghost"
+            onPress={goToForgotPassword}
+          />
           <BZButton
             title="¿No tienes cuenta? Regístrate."
             variant="ghost"

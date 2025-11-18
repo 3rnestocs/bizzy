@@ -2,8 +2,56 @@
 import { useRouter, useSegments } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 
 const TOKEN_KEY = 'bizzy_session_token';
+
+const storage = {
+  getItem: async (key: string): Promise<string | null> => {
+    if (Platform.OS === 'web') {
+      try {
+        return typeof window !== 'undefined' ? window.localStorage.getItem(key) : null;
+      } catch {
+        return null;
+      }
+    }
+    try {
+      return await SecureStore.getItemAsync(key);
+    } catch {
+      return null;
+    }
+  },
+  setItem: async (key: string, value: string) => {
+    if (Platform.OS === 'web') {
+      try {
+        if (typeof window !== 'undefined') window.localStorage.setItem(key, value);
+        return;
+      } catch {
+        return;
+      }
+    }
+    try {
+      await SecureStore.setItemAsync(key, value);
+    } catch {
+      return;
+    }
+  },
+  deleteItem: async (key: string) => {
+    if (Platform.OS === 'web') {
+      try {
+        if (typeof window !== 'undefined') window.localStorage.removeItem(key);
+        return;
+      } catch {
+        return;
+      }
+    }
+    try {
+      await SecureStore.deleteItemAsync(key);
+    } catch {
+      return;
+    }
+  },
+};
 
 interface SessionContextType {
   signIn: (data: any) => Promise<void>;
@@ -22,7 +70,7 @@ function useStorageState(key: string): [boolean, string | null, (value: string |
   useEffect(() => {
     async function loadStorage() {
       try {
-        const value = await SecureStore.getItemAsync(key);
+        const value = await storage.getItem(key);
         setState(value);
       } catch (e) {
         console.error('Failed to load session from storage', e);
@@ -36,9 +84,9 @@ function useStorageState(key: string): [boolean, string | null, (value: string |
   const setValue = (value: string | null) => {
     setState(value);
     if (value) {
-      SecureStore.setItemAsync(key, value);
+      storage.setItem(key, value);
     } else {
-      SecureStore.deleteItemAsync(key);
+      storage.deleteItem(key);
     }
   };
 

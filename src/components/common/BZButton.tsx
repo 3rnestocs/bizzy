@@ -1,7 +1,7 @@
 // Archivo: src/components/common/BZButton.tsx
 import Colors from '@/src/constants/Colors';
 import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
+import { ActivityIndicator, StyleProp, StyleSheet, Text, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 
 type BZButtonProps = {
   title: string;
@@ -9,7 +9,7 @@ type BZButtonProps = {
   // --- 1. AÑADIMOS LAS NUEVAS VARIANTES ---
   variant?: 'primary' | 'secondary' | 'accent' | 'light' | 'ghost';
   loading?: boolean;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 };
 
 export function BZButton({ 
