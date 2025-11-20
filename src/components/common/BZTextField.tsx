@@ -6,11 +6,13 @@ import { Platform, StyleSheet, Text, TextInput, TextInputProps, View, ViewStyle 
 interface BZTextFieldProps extends TextInputProps {
   label: string;
   style?: ViewStyle;
+  labelCentered?: boolean;
 }
-export function BZTextField({ label, style, ...textInputProps }: BZTextFieldProps) {
+
+export function BZTextField({ label, style, labelCentered = false, ...textInputProps }: BZTextFieldProps) {
   return (
     <View style={[styles.wrapper, style]}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={[styles.label, labelCentered && styles.labelCentered]}>{label}</Text>
       
       <TextInput
         // --- INICIO DEL CAMBIO ---
@@ -39,6 +41,10 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     // --- 3. Margen a la izquierda para el label ---
     marginLeft: 12, 
+  },
+  labelCentered: {
+    textAlign: 'center',
+    marginLeft: 0,
   },
   input: {
     // --- 2. Color de fondo correcto ---

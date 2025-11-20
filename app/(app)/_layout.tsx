@@ -100,6 +100,16 @@ export default function TabLayout() {
           headerShown: false,
         }}
       />
+
+      {/* Ruta oculta: Update Password (no aparece en la tab bar) */}
+      <Tabs.Screen
+        name="update-password" // Corresponde a app/(app)/update-password.tsx
+        options={{
+          href: null,
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
+        }}
+      />
       
       {/* Pestaña 5: Perfil (HEADER PERSONALIZADO) */}
       <Tabs.Screen

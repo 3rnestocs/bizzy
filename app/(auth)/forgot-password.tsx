@@ -82,10 +82,14 @@ export default function ForgotPasswordScreen() {
         </View>
 
         <Text style={styles.title}>Recupera tu Contraseña</Text>
-        <Text style={styles.subtitle}>
+        {/* <Text style={styles.subtitle}>
           {step === 'email' && 'Introduce tu correo'}
           {step === 'code' && 'Introduce clave de recuperación'}
           {step === 'reset' && 'Introduce nueva contraseña'}
+          {step === 'done' && '¡Has establecido tu nueva contraseña!'}
+        </Text> */}
+
+        <Text style={styles.subtitle}>
           {step === 'done' && '¡Has establecido tu nueva contraseña!'}
         </Text>
 
@@ -94,22 +98,22 @@ export default function ForgotPasswordScreen() {
 
         {step === 'email' && (
           <View style={styles.form}>
-            <BZTextField label="Correo electrónico" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
+            <BZTextField label="Introduce tu correo electrónico" labelCentered placeholder="Correo electrónico" keyboardType="email-address" autoCapitalize="none" value={email} onChangeText={setEmail} />
             <BZButton title="Enviar" variant="secondary" loading={loading} onPress={onSubmitEmail} />
           </View>
         )}
 
         {step === 'code' && (
           <View style={styles.form}>
-            <BZTextField label="Clave de recuperación" value={code} onChangeText={setCode} maxLength={8} autoCapitalize="none" />
+            <BZTextField label="Introduce clave de recuperación" labelCentered placeholder="Clave de recuperación" value={code} onChangeText={setCode} maxLength={8} autoCapitalize="none" />
             <BZButton title="Enviar" variant="secondary" onPress={onSubmitCode} />
           </View>
         )}
 
         {step === 'reset' && (
           <View style={styles.form}>
-            <BZTextField label="Contraseña nueva" secureTextEntry value={password} onChangeText={setPassword} autoCapitalize="none" />
-            <BZTextField label="Confirma tu nueva contraseña" secureTextEntry value={confirm} onChangeText={setConfirm} autoCapitalize="none" />
+            <BZTextField label="Introduce nueva contraseña" placeholder="Contraseña nueva" labelCentered secureTextEntry value={password} onChangeText={setPassword} autoCapitalize="none" />
+            <BZTextField label="Confirma tu nueva contraseña" placeholder="Confirmar contraseña" labelCentered secureTextEntry value={confirm} onChangeText={setConfirm} autoCapitalize="none" />
             <BZButton title="Enviar" variant="secondary" loading={loading} onPress={onSubmitReset} />
           </View>
         )}
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.brand.primary,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 20,
+    padding: 32,
   },
   card: {
     width: '100%',
@@ -151,11 +155,15 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: Colors.text.primary,
     marginTop: 4,
+    textAlign: 'center',
   },
   subtitle: {
     fontSize: 14,
     color: Colors.text.secondary,
     marginBottom: 10,
+    marginTop: 6,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   form: {
     marginTop: 4,

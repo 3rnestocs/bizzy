@@ -26,7 +26,7 @@ export default function AjustesScreen() {
       <ScrollView contentContainerStyle={styles.content}>
         <SettingRow label="Actualizar Información Personal" onPress={() => router.push('/(app)/update-info')} />
         <SettingRow label="Publicaciones Guardadas" onPress={() => {}} />
-        <SettingRow label="Cambiar Contraseña" onPress={() => {}} />
+        <SettingRow label="Cambiar Contraseña" onPress={() => router.push('/(app)/update-password')} />
         <SettingRow label="Cerrar Sesión" onPress={() => { signOut(); router.replace('/(auth)'); }} />
       </ScrollView>
     </View>
